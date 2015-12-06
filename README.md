@@ -24,3 +24,14 @@ On my Debian Jessie it looks like that:
     cd /rust-bindgen
     cargo build --release
     target/release/bindgen -lIP2Location -match IP2Location.h -match IP2Loc_DBInterface.h -o /usr/local/include/ip2location.rs /usr/local/include/IP2Location.h
+
+Running the unit test(s) needs a database installed:
+
+    cd /tmp
+    mkdir -p ip2location
+    wget http://download.ip2location.com/lite/IP2LOCATION-LITE-DB1.BIN.ZIP
+    unzip IP2LOCATION-LITE-DB1.BIN.ZIP
+    chmod 0644 IP2LOCATION-LITE-DB1.BIN
+    mkdir -p /usr/share/ip2location
+    cp IP2LOCATION-LITE-DB1.BIN /usr/share/ip2location/ip2location-lite-db1.bin
+  
