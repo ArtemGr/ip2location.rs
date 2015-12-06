@@ -19,7 +19,8 @@ include! ("/usr/local/include/ip2location.rs");
 /// The high-level wrapper around the ip2location C library.
 pub struct Ip2Location (*mut IP2Location);
 impl Ip2Location {
-  fn open (path: &str) -> Result<Ip2Location, String> {
+  /// mmap the BIN version of the ip2location database under the given `path`.
+  pub fn open (path: &str) -> Result<Ip2Location, String> {
     let i2l = unsafe {IP2Location_open (format! ("{}\0", path) .as_ptr() as *mut i8)};
     if i2l == null_mut() {return ERR! ("!IP2Location_open ({})", path)}
     let rc = unsafe {IP2Location_open_mem (i2l, IP2LOCATION_SHARED_MEMORY)};
