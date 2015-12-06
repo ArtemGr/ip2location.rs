@@ -1,6 +1,8 @@
 #### What's there.
 
-Not much by now. This piece helps opening and closing the database and let's you turn the IP address into ISO2 country code.
+Not much by now.
+
+This piece helps opening and closing the database and lets you turn the IP address into ISO2 country code.
 
 #### Requirements.
 This thing needs a little preparation.
