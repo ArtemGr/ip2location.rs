@@ -1,10 +1,10 @@
-#### What's there.
+#### What's there
 
 Not much by now.
 
 This piece helps opening and closing the database and lets you turn the IP address into ISO2 country code.
 
-#### Requirements.
+#### Requirements
 This thing needs a little preparation.
 First, the ip2location C library needs to be already installed.
 Then you need the rust-bindgen to generate the raw Rust version of the headers for you.

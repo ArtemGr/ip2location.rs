@@ -23,8 +23,12 @@ impl Ip2Location {
   pub fn open (path: &str) -> Result<Ip2Location, String> {
     let i2l = unsafe {IP2Location_open (format! ("{}\0", path) .as_ptr() as *mut i8)};
     if i2l == null_mut() {return ERR! ("!IP2Location_open ({})", path)}
-    let rc = unsafe {IP2Location_open_mem (i2l, IP2LOCATION_SHARED_MEMORY)};
-    if rc != 0 {return ERR! ("!IP2Location_open_mem")}
+
+    // There seems to be a bug in ip2location 7.0.2 that makes it crash when using shared memory.
+    // To avoid it we only mmap the smaller databases.
+    //let rc = unsafe {IP2Location_open_mem (i2l, IP2LOCATION_SHARED_MEMORY)};
+    //if rc != 0 {return ERR! ("!IP2Location_open_mem")}
+
     Ok (Ip2Location (i2l))}
 
   /// Get a country from the IP.
@@ -35,7 +39,7 @@ impl Ip2Location {
     if rec == null_mut() {return ERR! ("!IP2Location_get_country_short")}
     if unsafe {(*rec).country_short} == null_mut() {return ERR! ("!country_short")}
     let country = unsafe {CStr::from_ptr ((*rec).country_short)} .to_bytes();
-    if country == b"-" {return Ok (None)}
+    if country == b"-" || country == b"??" {return Ok (None)}
     if country.len() != 2 {return ERR! ("ip2country] !iso2: '{}'.", unsafe {from_utf8_unchecked (country)})}
     let country = [country[0], country[1]];
     unsafe {IP2Location_free_record (rec)};
