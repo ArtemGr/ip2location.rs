@@ -27,11 +27,11 @@ On my Debian Jessie it looks like that:
 
 Running the unit test(s) needs a database installed:
 
-    cd /tmp
-    mkdir -p ip2location
+    mkdir -p /usr/share/ip2location && cd /usr/share/ip2location
     wget http://download.ip2location.com/lite/IP2LOCATION-LITE-DB1.BIN.ZIP
-    unzip IP2LOCATION-LITE-DB1.BIN.ZIP
-    chmod 0644 IP2LOCATION-LITE-DB1.BIN
-    mkdir -p /usr/share/ip2location
+    unzip IP2LOCATION-LITE-DB1.BIN.ZIP IP2LOCATION-LITE-DB1.BIN
     cp IP2LOCATION-LITE-DB1.BIN /usr/share/ip2location/ip2location-lite-db1.bin
-  
+    wget http://www.ip2location.com/downloads/sample.bin.db5.zip
+    unzip sample.bin.db5.zip IP-COUNTRY-REGION-CITY-LATITUDE-LONGITUDE-SAMPLE.BIN
+    chmod 0644 *.BIN
+    rm -f *.zip *.ZIP
