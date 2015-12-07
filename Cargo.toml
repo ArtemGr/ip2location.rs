@@ -16,3 +16,6 @@ doctest = false
 
 [dependencies]
 gstuff = {git = "https://github.com/ArtemGr/gstuff.rs"}
+
+[dev-dependencies]
+power-assert = "0.3.5"

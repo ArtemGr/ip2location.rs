@@ -2,7 +2,8 @@
 
 Not much by now.
 
-This piece helps opening and closing the database and lets you turn the IP address into ISO2 country code.
+This piece helps opening and closing the database and lets you turn the IP address into ISO2 country code
+or fetch a longitude and latitude for it.
 
 #### Requirements
 This thing needs a little preparation.

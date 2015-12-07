@@ -16,6 +16,10 @@ pub type uint32_t = u32;
 pub enum FILE {}
 include! ("/usr/local/include/ip2location.rs");
 
+/// Location found in the ip2location database.
+#[derive(Debug, PartialEq)]
+pub struct Location {pub longitude: f32, pub latitude: f32}
+
 /// The high-level wrapper around the ip2location C library.
 pub struct Ip2Location (*mut IP2Location);
 impl Ip2Location {
@@ -33,8 +37,8 @@ impl Ip2Location {
 
   /// Get a country from the IP.
   pub fn ip2country (&self, ip: &str) -> Result<Option<[u8; 2]>, String> {
-    let mut ipz: [u8; 64] = unsafe {uninitialized()}; let ipz = gstring! (ipz, {try_s! (write! (ipz, "{}\0", ip))});
     assert! (self.0 != null_mut());
+    let mut ipz: [u8; 64] = unsafe {uninitialized()}; let ipz = gstring! (ipz, {try_s! (write! (ipz, "{}\0", ip))});
     let rec = unsafe {IP2Location_get_country_short (self.0, ipz.as_ptr() as *mut i8)};
     if rec == null_mut() {return ERR! ("!IP2Location_get_country_short")}
     if unsafe {(*rec).country_short} == null_mut() {return ERR! ("!country_short")}
@@ -43,7 +47,26 @@ impl Ip2Location {
     if country.len() != 2 {return ERR! ("ip2country] !iso2: '{}'.", unsafe {from_utf8_unchecked (country)})}
     let country = [country[0], country[1]];
     unsafe {IP2Location_free_record (rec)};
-    Ok (Some (country))}}
+    Ok (Some (country))}
+
+  /// Get a geographical location from the IP.
+  pub fn location (&self, ip: &str) -> Result<Option<Location>, String> {
+    assert! (self.0 != null_mut());
+    let mut ipz: [u8; 64] = unsafe {uninitialized()}; let ipz = gstring! (ipz, {try_s! (write! (ipz, "{}\0", ip))});
+
+    let rec = unsafe {IP2Location_get_longitude (self.0, ipz.as_ptr() as *mut i8)};
+    if rec == null_mut() {return ERR! ("!IP2Location_get_longitude")}
+    let longitude = unsafe {(*rec).longitude};
+    unsafe {IP2Location_free_record (rec)};
+    if longitude == 0.0 {return Ok (None)}
+
+    let rec = unsafe {IP2Location_get_latitude (self.0, ipz.as_ptr() as *mut i8)};
+    if rec == null_mut() {return ERR! ("!IP2Location_get_latitude")}
+    let latitude = unsafe {(*rec).latitude};
+    unsafe {IP2Location_free_record (rec)};
+    if latitude == 0.0 {return Ok (None)}
+
+    Ok (Some (Location {longitude: longitude, latitude: latitude}))}}
 
 impl Drop for Ip2Location {
   fn drop (&mut self) {
