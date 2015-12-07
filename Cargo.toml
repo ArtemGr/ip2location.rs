@@ -1,6 +1,6 @@
 [package]
 name = "ip2location"
-version = "0.0.2"
+version = "0.0.3"
 authors = ["ArtemGr <artemciy@gmail.com>"]
 
 description = "ip2location C library wrapper"
@@ -13,6 +13,8 @@ license = "Apache-2.0"
 name = "ip2location"
 path = "ip2location.rs"
 doctest = false
+test = false
+bench = false
 
 [dependencies]
 gstuff = {git = "https://github.com/ArtemGr/gstuff.rs"}
