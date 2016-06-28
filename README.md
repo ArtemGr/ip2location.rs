@@ -24,7 +24,8 @@ On my Debian Jessie it looks like that:
     git clone https://github.com/crabtw/rust-bindgen.git
     cd /rust-bindgen
     cargo build --release
-    target/release/bindgen -lIP2Location -match IP2Location.h -match IP2Loc_DBInterface.h -o /usr/local/include/ip2location.rs /usr/local/include/IP2Location.h
+    bindgen --link=IP2Location --match=IP2Location.h --match=IP2Loc_DBInterface.h --output=/usr/local/include/ip2location.rs /usr/local/include/IP2Location.h
+    perl -i.tmp -0pe 's/#!\[allow\(.*?\)\]//s' /usr/local/include/ip2location.rs
 
 Running the unit test(s) needs a database installed:
 
