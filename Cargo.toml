@@ -17,7 +17,7 @@ test = false
 bench = false
 
 [dependencies]
-gstuff = {git = "https://github.com/ArtemGr/gstuff.rs"}
+gstuff = "*"
 
 [dev-dependencies]
 power-assert = "0.3.5"
