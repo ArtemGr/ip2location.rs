@@ -19,12 +19,12 @@ On my Debian Jessie it looks like that:
     ./configure --disable-static && make && make install && echo Done.
     ldconfig
 
-    apt-get install -y libclang-dev
+    apt-get install -y libclang-dev clang
     cd /tmp
-    git clone https://github.com/crabtw/rust-bindgen.git
-    cd /rust-bindgen
+    git clone --progress --depth 1 https://github.com/ArtemGr/rust-bindgen.git
+    cd rust-bindgen
     cargo build --release
-    bindgen --link=IP2Location --match=IP2Location.h --match=IP2Loc_DBInterface.h --output=/usr/local/include/ip2location.rs /usr/local/include/IP2Location.h
+    target/release/bindgen --link=IP2Location --match=IP2Location.h --match=IP2Loc_DBInterface.h --output=/usr/local/include/ip2location.rs /usr/local/include/IP2Location.h
     perl -i.tmp -0pe 's/#!\[allow\(.*?\)\]//s' /usr/local/include/ip2location.rs
 
 Running the unit test(s) needs a database installed:
