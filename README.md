@@ -12,20 +12,26 @@ Then you need the rust-bindgen to generate the raw Rust version of the headers f
 On my Debian Jessie it looks like that:
 
     cd /tmp
-    wget http://www.ip2location.com/downloads/ip2location-c-7.0.2.tar.gz
-    tar -xzf ip2location-c-*.tar.gz
-    rm -f ip2location-c-*.tar.gz
-    cd ip2location-c-*
-    ./configure --disable-static && make && make install && echo Done.
-    ldconfig
+    wget https://github.com/chrislim2888/IP2Location-C-Library/archive/8.0.7.tar.gz
+    tar -xzf 8.0.7.tar.gz
+    rm -f 8.0.7.tar.gz
+    cd IP2Location-C-Library-8.0.7/
+    touch README
+    autoreconf -i -v --force
+    ./configure --disable-static && make && sudo make install && echo Done.
+    sudo ldconfig
 
-    apt-get install -y libclang-dev clang
+    sudo apt-get install -y libclang-dev clang
     cd /tmp
     git clone --progress --depth 1 https://github.com/ArtemGr/rust-bindgen.git
     cd rust-bindgen
     cargo build --release
-    target/release/bindgen --link=IP2Location --match=IP2Location.h --match=IP2Loc_DBInterface.h --output=/usr/local/include/ip2location.rs /usr/local/include/IP2Location.h
-    perl -i.tmp -0pe 's/#!\[allow\(.*?\)\]//s' /usr/local/include/ip2location.rs
+    sudo target/release/bindgen --link=IP2Location --match=IP2Location.h --match=IP2Loc_DBInterface.h --output=/usr/local/include/ip2location.rs /usr/local/include/IP2Location.h
+    sudo perl -i.tmp -0pe 's/#!\[allow\(.*?\)\]//s' /usr/local/include/ip2location.rs
+
+    cd /tmp
+    rm -rf IP2Location-C-Library-8.0.7/
+    rm -rf rust-bindgen/
 
 Running the unit test(s) needs a database installed:
 

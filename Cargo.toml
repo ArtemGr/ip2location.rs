@@ -17,7 +17,8 @@ test = false
 bench = false
 
 [dependencies]
-gstuff = "*"
+gstuff = "0.5"
+libc = "0.2"
 
 [dev-dependencies]
-power-assert = "0.3.5"
+power-assert = "0.3"
