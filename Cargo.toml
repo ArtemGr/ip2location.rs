@@ -17,7 +17,7 @@ test = false
 bench = false
 
 [dependencies]
-gstuff = "0.5"
+gstuff = "0.6"
 libc = "0.2"
 
 [dev-dependencies]
