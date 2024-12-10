@@ -1,6 +1,7 @@
 [package]
 name = "ip2location"
-version = "0.0.4"
+version = "0.0.5"
+edition = "2021"
 authors = ["ArtemGr <artemciy@gmail.com>"]
 
 description = "ip2location C library wrapper"
@@ -8,6 +9,8 @@ repository = "https://github.com/ArtemGr/ip2location.rs"
 #readme = "README.md"
 #keywords = ["web", "server"]
 license = "Apache-2.0"
+
+links = "IP2Location"
 
 [lib]
 name = "ip2location"
@@ -17,8 +20,5 @@ test = false
 bench = false
 
 [dependencies]
-gstuff = "0.7"
+gstuff = "0.8"
 libc = "0.2"
-
-[dev-dependencies]
-power-assert = "0.3"

@@ -1,19 +1,14 @@
-#![allow(dead_code, non_camel_case_types, non_upper_case_globals)]
+#![allow(deprecated, dead_code, non_snake_case, non_camel_case_types, non_upper_case_globals)]
+#![feature(unsafe_extern_blocks)]
 
-#[macro_use] extern crate gstuff;
-extern crate libc;
-
+use gstuff::{gstring, try_s, ERR};
 use std::ffi::CStr;
 use std::io::Write;
 use std::mem::uninitialized;
 use std::ptr::null_mut;
 use std::str::from_utf8_unchecked;
 
-pub type uint8_t = u8;
-pub type int32_t = i32;
-pub type uint32_t = u32;
-pub enum FILE {}
-include! ("/usr/local/include/ip2location.rs");
+include! ("gen.rs");
 
 /// Location found in the ip2location database.
 #[derive(Debug, PartialEq)]
@@ -37,7 +32,8 @@ impl Ip2Location {
   /// Get a country from the IP.
   pub fn ip2country (&self, ip: &str) -> Result<Option<[u8; 2]>, String> {
     assert! (self.0 != null_mut());
-    let mut ipz: [u8; 64] = unsafe {uninitialized()}; let ipz = gstring! (ipz, {try_s! (write! (ipz, "{}\0", ip))});
+    #[allow(invalid_value)] let mut ipz: [u8; 64] = unsafe {uninitialized()};
+    let ipz = gstring! (ipz, {try_s! (write! (ipz, "{}\0", ip))});
     let rec = unsafe {IP2Location_get_country_short (self.0, ipz.as_ptr() as *mut i8)};
     if rec == null_mut() {return ERR! ("!IP2Location_get_country_short")}
     if unsafe {(*rec).country_short} == null_mut() {return ERR! ("!country_short")}
@@ -51,7 +47,8 @@ impl Ip2Location {
   /// Get a geographical location from the IP.
   pub fn location (&self, ip: &str) -> Result<Option<Location>, String> {
     assert! (self.0 != null_mut());
-    let mut ipz: [u8; 64] = unsafe {uninitialized()}; let ipz = gstring! (ipz, {try_s! (write! (ipz, "{}\0", ip))});
+    #[allow(invalid_value)] let mut ipz: [u8; 64] = unsafe {uninitialized()};
+    let ipz = gstring! (ipz, {try_s! (write! (ipz, "{}\0", ip))});
 
     let rec = unsafe {IP2Location_get_longitude (self.0, ipz.as_ptr() as *mut i8)};
     if rec == null_mut() {return ERR! ("!IP2Location_get_longitude")}
